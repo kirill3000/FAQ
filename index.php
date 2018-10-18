@@ -73,11 +73,11 @@
 #block2
 {
 height:10px;
-width:10px;
+width:300px;
 background-color: #ff0ff0;
    position: absolute; /* Абсолютное позиционирование */
  left: 610px; /* Сдвиг слоя влево */
-    top: 1px; /* Смещение слоя вниз */
+    top: 0px; /* Смещение слоя вниз */
 	text-align: right;
 
 
@@ -101,7 +101,7 @@ position: absolute; /* Относительное позиционировани
 {
 position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
-    width: 10px; /* Ширина слоя */
+    width: 100px; /* Ширина слоя */
     height:10px;
    background: #800000;
     color: white; /* Цвет текста */
