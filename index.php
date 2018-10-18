@@ -9,15 +9,48 @@
 
 <html>
 <head>
+<!-- Yandex.Metrika informer -->
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter50797789 = new Ya.Metrika2({
+                    id:50797789,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks2");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/50797789" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
  <meta charset="UTF-8">
  <title>Мануал Clickhouse</title>
         <script type="text/javascript">
             function show_Max() {
-		  document.getElementById("block4").style.top = "200px";
+		  document.getElementById("block4").style.top = "330px";
            }
 
             function show_Min() {
-                document.getElementById("block4").style.top = "-110px";
+                document.getElementById("block4").style.top = "30px";
            }
 
         </script>
@@ -26,7 +59,7 @@
 <style type="text/css">
 #block1
 {
- position: relative; /* Относительное позиционирование */
+ position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
     width: 600px; /* Ширина слоя */
     height:320px;
@@ -43,8 +76,9 @@ height:10px;
 width:10px;
 background-color: #ff0ff0;
    position: absolute; /* Абсолютное позиционирование */
-    top: 75px; /* Положение от нижнего края */
-     right: 980px; /* Положение от правого края */
+ left: 610px; /* Сдвиг слоя влево */
+    top: 1px; /* Смещение слоя вниз */
+	text-align: right;
 
 
 }
@@ -52,24 +86,28 @@ background-color: #ff0ff0;
 
 #block4
 {
-position: relative; /* Относительное позиционирование */
+position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
     width: 10px; /* Ширина слоя */
     height:10px;
    background: #800000;
     color: white; /* Цвет текста */
- left: -900px; /* Сдвиг слоя влево */
-    top: -110px; /* Смещение слоя вниз */
+ left: 15 px; /* Сдвиг слоя влево */
+    top: 30px; /* Смещение слоя вниз */
+	text-align: right;
 }
 
 #block5
 {
-height:10px;
-width:10px;
-background-color: #ff0ff0;
-   
-    top: 520px; 
-    right: 980px; 
+position: absolute; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 10px; /* Ширина слоя */
+    height:10px;
+   background: #800000;
+    color: white; /* Цвет текста */
+ left: 1550px; /* Сдвиг слоя влево */
+    top: 1px; /* Смещение слоя вниз */
+	text-align: right;
 }
 
 
@@ -84,11 +122,11 @@ background-color: #ff0ff0;
 
 
 
-
-
-
-
 <div id="block1">
+
+
+
+
 <form method="post">
 <fieldset>
 <legend>
@@ -127,7 +165,18 @@ background-color: #ff0ff0;
 </div>
 
 <div id="block2" >
+
+
+<a href="https://metrika.yandex.ru/stat/?id=50797789&amp;from=informer"
+target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/50797789/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="50797789" data-lang="ru" /></a>
+
 Записей в базе: <?php Row_Counts($connect);?>
+
+</div>
+
+
+
 
 
 
