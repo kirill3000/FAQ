@@ -47,11 +47,12 @@ A
  
 
 $X =$connect->query("
-SELECT 'All','Тип вопроса:' as name union
+SELECT 'All','Выбрать тип:' as name union
+SELECT 'All','All' as name union
 SELECT 'CH','CH' as name union
 SELECT 'ZK','ZK' as name union
 SELECT 'BI','BI' as name union
-SELECT 'Func','Функции' as name union
+SELECT 'Func','Func' as name union
 SELECT 'Linux','Linux' as name
 ");
 
@@ -59,11 +60,11 @@ SELECT 'Linux','Linux' as name
  
  
 
-print '<table border="1" width = 1500px;  bgcolor="#A9A9A9">';
+print '<table border="1" width = 1500;  bgcolor="#A9A9A9">';
  print '<tr>
 <th Width>Id</th>';
 echo '<form method="post">';
-echo '<th Width  = 250px >';
+echo '<th Width  = 50 text-align-last:center; >';
  echo '<select name="Filter" class="myInputT"  onchange="this.form.submit();"">';
 
   while ($row2 = mysqli_fetch_assoc($X)) {
@@ -75,10 +76,10 @@ echo '<th Width  = 250px >';
     
 print '</select>
 </th>
-<th Width>Создание</th>
+<th Width  = 150>Создание</th>
 <th Width>Githab</th> 
-<th Width  = 300>Вопрос</th>
-<th Width  = 600>Ответ</th>
+<th Width  = 500>Вопрос</th>
+<th Width  = 800>Ответ</th>
 </tr>';
 
   while ($row = mysqli_fetch_assoc($result)) {
