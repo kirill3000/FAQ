@@ -7,9 +7,6 @@
 
 
 
-
-
-
 <html>
 <head>
 <!-- Yandex.Metrika informer -->
@@ -76,12 +73,12 @@
 #block2
 {
 height:10px;
-width:250px;
+width:300px;
 background-color: #ff0ff0;
    position: absolute; /* Абсолютное позиционирование */
- left: 700px; /* Сдвиг слоя вправо */
-    top: 50px; /* Смещение слоя вниз */
-	text-align: left;
+ left: 610px; /* Сдвиг слоя влево */
+    top: 0px; /* Смещение слоя вниз */
+	text-align: right;
 
 
 }
@@ -95,12 +92,23 @@ position: absolute; /* Относительное позиционировани
     height:10px;
    background: #800000;
     color: white; /* Цвет текста */
- left: 5px; /* Сдвиг слоя влево */
+ left: 15 px; /* Сдвиг слоя влево */
     top: 30px; /* Смещение слоя вниз */
 	text-align: right;
 }
 
-
+#block5
+{
+position: absolute; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 100px; /* Ширина слоя */
+    height:10px;
+   background: #800000;
+    color: white; /* Цвет текста */
+ left: 1550px; /* Сдвиг слоя влево */
+    top: 1px; /* Смещение слоя вниз */
+	text-align: right;
+}
 
 
 </style>
@@ -128,29 +136,14 @@ position: absolute; /* Относительное позиционировани
 </legend>
 
 
-
-<?php 
-$X =$connect->query("
-SELECT '','' as name union
-SELECT 'CH','CH' as name union
-SELECT 'ZK','ZK' as name union
-SELECT 'BI','BI' as name union
-SELECT 'Func','Функции' as name union
-SELECT 'Linux','Linux' as name
-");
-?>
-
-
-
-
 Выбрать тип вопроса:
 <select name="Types" class="myInputT" required>
-<?php 
-while ($row = mysqli_fetch_assoc($X))
-{
-    echo "<option value=".$row['name'].">".$row['name']."</option>";
-}
-?>        
+<option value=""></option> 
+<option value="CH">CH</option> 
+<option value="ZK">ZK</option> 
+<option value="BI">BI</option> 
+<option value="Func">Функции</option> 
+<option value="Linux">Linux</option> 
 </select>
  <p>
 				
@@ -194,6 +187,53 @@ style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" tit
 </div>
 
 
+
+<div id="block5" >
+
+<table id="sf" border="1" cellpadding="0" cellspacing="0"   >
+
+<tr>
+<th><select name="filt" onchange="filter1(this, 'sf'); this.options[0].selected = true; ">
+<option value="">Фильтр по типу вопроса: </option>
+<option value="">Сбросить фильтр</option> 
+<option value="CH">CH</option> 
+<option value="ZK">ZK</option> 
+<option value="BI">BI</option> 
+<option value="Func">Функции</option> 
+
+</select> </th>
+<th Width  = 80>Создание</th>
+<th Width  = 20>Актуализация</th>
+<th Width  = 20>Githab</th> 
+<th Width  = 20>Вопрос</th>
+<th Width  = 20>Ответ</th>
+</tr> 
+ <!-- 5 -->
+<tr>
+<td>Func</td>
+  <td>2018-09-01</td>
+<td>2018-09-01</td>
+<td>NO</td>  
+<td></td>
+<td>
+replaceRegexpOne('20170809', '(\\d{4})(\\d{2})(\\d{2})', '\\1-\\2-\\3') 
+</td>
+</tr>
+<!-- 6 -->
+<tr>
+<td>CH</td>
+  <td>2018-09-01</td>
+<td>2018-09-01</td>
+<td>NO</td>  
+<td></td>
+<td>
+event_type  Enum8('VIEWS' = 1, 'CLICKS' = 2)
+</td>
+</tr>
+
+</table>
+   
+</div>
 
 
 </body>
