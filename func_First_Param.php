@@ -59,3 +59,17 @@ else
 {
     $_POST['Name']=0;
 }
+
+
+
+
+if (isset($_POST['Filter'])) {
+    $_POST['Filter'] = $_POST['Filter'];
+}
+else 
+{
+    $_POST['Filter']="All";
+}
+
+
+
