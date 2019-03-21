@@ -1,9 +1,4 @@
-<?php include_once ("func_First_Param.php");
- include_once ("func_Conn.php");
- include_once ("func_Add_Rows.php");
- include_once ("func_Row_Counts.php");
- include_once ("func_Table_Result.php");
- include_once ("func_Rand.php");?>
+<?php  include_once ("func_Conn.php");?>
 
 
 
@@ -57,32 +52,6 @@
 
 
 <style type="text/css">
-#block1
-{
- position: absolute; /* Относительное позиционирование */
-    float: left; /* Совмещение колонок по горизонтали */
-    width: 600px; /* Ширина слоя */
-    height:320px;
-    background: #800000; /* Цвет фона */
-    color: white; /* Цвет текста */
- left: 5px; /* Сдвиг слоя влево */
-    top: 5px; /* Смещение слоя вниз */
-	text-align: right;
-}
-
-#block2
-{
-height:10px;
-width:10px;
-background-color: #ff0ff0;
-   position: absolute; /* Абсолютное позиционирование */
- left: 610px; /* Сдвиг слоя влево */
-    top: 1px; /* Смещение слоя вниз */
-	text-align: right;
-
-
-}
-
 
 #block4
 {
@@ -97,18 +66,7 @@ position: absolute; /* Относительное позиционировани
 	text-align: right;
 }
 
-#block5
-{
-position: absolute; /* Относительное позиционирование */
-    float: left; /* Совмещение колонок по горизонтали */
-    width: 10px; /* Ширина слоя */
-    height:10px;
-   background: #800000;
-    color: white; /* Цвет текста */
- left: 1550px; /* Сдвиг слоя влево */
-    top: 1px; /* Смещение слоя вниз */
-	text-align: right;
-}
+
 
 
 </style>
@@ -118,14 +76,7 @@ position: absolute; /* Относительное позиционировани
 <body>
 
  
-
-
-
-
-<div id="block1">
-
-
-
+<div>
 
 <form method="post">
 <fieldset>
@@ -147,9 +98,9 @@ position: absolute; /* Относительное позиционировани
 </select>
  <p>
 				
-Задать вопрос: <textarea name = "Q" rows="5" cols="50" value =  "" class="myInputQ"></textarea>  
+Задать вопрос: <textarea name = "Q" rows="5" cols="50"  ></textarea>  
  <br>
-Ответить: <textarea name = "A" rows="5" cols="50" value =  "" class="myInputA" required></textarea>  
+Ответить: <textarea name = "A" rows="5" cols="50"  required></textarea>  
  <br>
 Уже есть в FAQ на Githab ? 
 	Нет<input type =  "radio" name = "Git" value =  "N" checked>
@@ -157,84 +108,89 @@ position: absolute; /* Относительное позиционировани
 
 <p>
 	<input type="submit" name="add" value="Добавить в базу" >
+
+
+	
 			</fieldset>
-		</form>
+			</form>
+<div>
+	
+	
+	
+<div>	
+	
+<?php
 
 
 
+
+$Types = $_POST['Types'];
+$Git = $_POST['Git'];
+$Q = $_POST['Q'];
+$A = $_POST['A'];
+
+
+
+if ($_POST['Git'] == 'Y') {$Git = 0;} else {$Git = 1;} 
+
+
+
+echo $Types;
+echo $Git;
+echo $Q;
+echo  $A;
+
+
+
+
+if ($connect->connect_error) {
+    die("Connection failed: " . $connect->connect_error);
+} 
+
+$sql = "INSERT INTO test(Types,Mark_Git,Q, A) VALUES  ('$Types' ,'$Git','$Q','$A')";
+
+if ($connect->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $connect->error;
+}	
+
+  
+  
+  
+  
+  $query = "SELECT Id FROM test";
+
+if ($result = $connect->query($query)) {
+
+print '<table border="1" width = 1500px;  bgcolor="#A9A9A9">';
+ print '<tr>
+<th Width>Id</th>
+<th Width>Тип вопроса</th>
+<th Width>Создание</th>
+<th Width>Githab</th> 
+<th Width  = 300>Вопрос</th>
+<th Width  = 600>Ответ</th>
+</tr>';
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    print '<tr>';
+    print '<td>'.$row["Id"].'</td>';
+    print '</tr>';
+}
+print '</table>';
+mysqli_free_result($result);
+
+}
+
+/* закрытие соединения */
+$connect->close();
+  
+  
+  
+		
+?>
 </div>
-
-<div id="block2" >
-
-
-<a href="https://metrika.yandex.ru/stat/?id=50797789&amp;from=informer"
-target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/50797789/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
-style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="50797789" data-lang="ru" /></a>
-
-Записей в базе: <?php Row_Counts($connect);?>
-
-</div>
-
-
-
-
-
-
-
-<div id="block4" >
- <?php Table_Result($connect);?>
- <?php $connect->close(); ?>
-</div>
-
-
-
-<div id="block5" >
-
-<table id="sf" border="1" cellpadding="0" cellspacing="0"   >
-
-<tr>
-<th><select name="filt" onchange="filter1(this, 'sf'); this.options[0].selected = true; ">
-<option value="">Фильтр по типу вопроса: </option>
-<option value="">Сбросить фильтр</option> 
-<option value="CH">CH</option> 
-<option value="ZK">ZK</option> 
-<option value="BI">BI</option> 
-<option value="Func">Функции</option> 
-
-</select> </th>
-<th Width  = 80>Создание</th>
-<th Width  = 20>Актуализация</th>
-<th Width  = 20>Githab</th> 
-<th Width  = 20>Вопрос</th>
-<th Width  = 20>Ответ</th>
-</tr> 
- <!-- 5 -->
-<tr>
-<td>Func</td>
-  <td>2018-09-01</td>
-<td>2018-09-01</td>
-<td>NO</td>  
-<td></td>
-<td>
-replaceRegexpOne('20170809', '(\\d{4})(\\d{2})(\\d{2})', '\\1-\\2-\\3') 
-</td>
-</tr>
-<!-- 6 -->
-<tr>
-<td>CH</td>
-  <td>2018-09-01</td>
-<td>2018-09-01</td>
-<td>NO</td>  
-<td></td>
-<td>
-event_type  Enum8('VIEWS' = 1, 'CLICKS' = 2)
-</td>
-</tr>
-
-</table>
-   
-</div>
-
 
 </body>
 </html>
