@@ -1,10 +1,63 @@
-<?php  include_once ("func_Conn.php");?>
+<?php  include_once ("func_Conn.php");
+
+?>
+
+
 
 
 
 <html>
 <head>
-<!-- Yandex.Metrika informer -->
+
+
+
+<style type="text/css">
+#block1
+{
+ position: absolute; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 600px; /* Ширина слоя */
+    height:320px;
+    background: #800000; /* Цвет фона */
+    color: white; /* Цвет текста */
+ left: 10px; /* Сдвиг слоя влево */
+    top: 35px; /* Смещение слоя вниз */
+	text-align: right;
+}
+
+
+#block2
+{
+position: absolute; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 10px; /* Ширина слоя */
+    height:10px;
+   background: #800000;
+    color: white; /* Цвет текста */
+ left: 15 px; /* Сдвиг слоя влево */
+    top: 30px; /* Смещение слоя вниз */
+	text-align: right;
+}
+
+
+
+
+#block4
+{
+position: absolute; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 10px; /* Ширина слоя */
+    height:10px;
+   background: #800000;
+    color: white; /* Цвет текста */
+ left: 15 px; /* Сдвиг слоя влево */
+    top: 30px; /* Смещение слоя вниз */
+	text-align: right;
+}
+
+
+
+</style>
 
 
 
@@ -39,6 +92,9 @@
 
  <meta charset="UTF-8">
  <title>Мануал Clickhouse</title>
+ 
+ 
+ 
         <script type="text/javascript">
             function show_Max() {
 		  document.getElementById("block4").style.top = "330px";
@@ -47,43 +103,40 @@
             function show_Min() {
                 document.getElementById("block4").style.top = "30px";
            }
+		   
+	    
 
         </script>
 
 
-<style type="text/css">
 
-#block4
-{
-position: absolute; /* Относительное позиционирование */
-    float: left; /* Совмещение колонок по горизонтали */
-    width: 10px; /* Ширина слоя */
-    height:10px;
-   background: #800000;
-    color: white; /* Цвет текста */
- left: 15 px; /* Сдвиг слоя влево */
-    top: 30px; /* Смещение слоя вниз */
-	text-align: right;
-}
-
-
-
-
-</style>
 
 
 </head>
 <body>
 
- 
+  
 <div>
+ 
+ 
+<table border="1"  bgcolor="#A9A9A9">
+<tr>
+<th Width  = 110>  <input type="button" onclick="show_Max();" value="Добавить вопрос:"/> </th>
+<th Width  = 110>  <input type="button" onclick="show_Max();" value="Добавить фильтры:"/> </th>
+</tr>
+</table>  
+</div>
 
-<form method="post">
+
+
+
+
+<div id="block1">
+
+<form action='Add.php' method='POST'>
 <fieldset>
 <legend>
 Здесь можно добавить вопрос и решение по Clickhouse: 
-<input type="button" onclick="show_Max();" value="V"/>
-<input type="button" onclick="show_Min();" value="^"/>
 </legend>
 
 
@@ -107,75 +160,63 @@ position: absolute; /* Относительное позиционировани
 	Да<input type =  "radio" name = "Git" value =  "Y"> 
 
 <p>
+<input type="button" onclick="show_Min();" value="Свернуть"/>
 	<input type="submit" name="add" value="Добавить в базу" >
-
 
 	
 			</fieldset>
-			</form>
-<div>
+				</form>		
+
+					
+</div>
+	
+	
+<div id="block2">
+
+<table border="1"  bgcolor="#5he8jd">
+<tr>
+<th Width  = 110>  ccccccccccccccccccccccccccccc </th>
+<th Width  = 110>  cccccccccccccccccccccccc</th>
+<th Width  = 110>  cccccccccccccccccccccccc</th>
+</tr>
+</table>  
+
+</div>	
 	
 	
 	
-<div>	
 	
+<div id="block4">
+	
+
+
 <?php
 
-
-
-
-$Types = $_POST['Types'];
-$Git = $_POST['Git'];
-$Q = $_POST['Q'];
-$A = $_POST['A'];
-
-
-
-if ($_POST['Git'] == 'Y') {$Git = 0;} else {$Git = 1;} 
-
-
-
-echo $Types;
-echo $Git;
-echo $Q;
-echo  $A;
-
-
-
-
-if ($connect->connect_error) {
-    die("Connection failed: " . $connect->connect_error);
-} 
-
-$sql = "INSERT INTO test(Types,Mark_Git,Q, A) VALUES  ('$Types' ,'$Git','$Q','$A')";
-
-if ($connect->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $connect->error;
-}	
-
   
   
   
   
-  $query = "SELECT Id FROM test";
+  $query = "SELECT Id, cast(Create_Date as date) as  Create_Date, Types, Q,A FROM test";
 
 if ($result = $connect->query($query)) {
 
 print '<table border="1" width = 1500px;  bgcolor="#A9A9A9">';
  print '<tr>
-<th Width>Id</th>
-<th Width>Тип вопроса</th>
-<th Width>Создание</th>
-<th Width>Githab</th> 
-<th Width  = 300>Вопрос</th>
-<th Width  = 600>Ответ</th>
+<th>Id</th>
+<th>Тип вопроса</th>
+<th Width  = 90 >Создание</th>
+<th Width  = 600>Вопрос</th>
+<th Width  = 700>Ответ</th>
 </tr>';
 
   while ($row = mysqli_fetch_assoc($result)) {
     print '<tr>';
     print '<td>'.$row["Id"].'</td>';
+		    print '<td>'.$row["Types"].'</td>';
+				    print '<td>'.$row["Create_Date"].'</td>';
+			    print '<td>'.$row["Q"].'</td>';
+				    print '<td>'.$row["A"].'</td>';
+
     print '</tr>';
 }
 print '</table>';
@@ -190,7 +231,17 @@ $connect->close();
   
 		
 ?>
+
+
+	
+		
+
+
 </div>
 
 </body>
 </html>
+
+
+
+
