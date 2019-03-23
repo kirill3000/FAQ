@@ -6,6 +6,8 @@
 
 
 
+
+
 <html>
 <head>
 
@@ -23,6 +25,9 @@
  left: 10px; /* Сдвиг слоя влево */
     top: 40px; /* Смещение слоя вниз */
 	text-align: right;
+	display: none;
+
+	
 	
 }
 
@@ -31,13 +36,20 @@
 {
 position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
-    width: 10px; /* Ширина слоя */
-    height:10px;
-   background: #800000;
-    color: white; /* Цвет текста */
+    width: 0px; /* Ширина слоя */
+    height:0px;
+   background: #ffffff;
+    color: black; /* Цвет текста */
  left: 15 px; /* Сдвиг слоя влево */
-    top: 40px; /* Смещение слоя вниз */
 	text-align: right;
+
+	<?php  
+
+  isset($_POST['Sub_filter']) ?  $Temp = " display: inline;" :  $Temp = "display: none;"  ;
+  echo $Temp ;
+?>
+	
+
 }
 
 
@@ -52,9 +64,16 @@ position: absolute; /* Относительное позиционировани
    background: #800000;
     color: white; /* Цвет текста */
  left: 15 px; /* Сдвиг слоя влево */
-    top: 40px; /* Смещение слоя вниз */
+
 	text-align: right;
-	visiblity: hidden;
+	
+
+	<?php  
+
+  isset($_POST['Sub_filter']) ?  $Temp = "top: 235px;" :  $Temp = " top: 40px; "  ;
+  echo $Temp ;
+?>
+
 
 }
 
@@ -99,9 +118,14 @@ position: absolute; /* Относительное позиционировани
  
  
         <script type="text/javascript">
-            function show_Max_Add() {
-		  document.getElementById("Result").style.top = "330px";
+
+
 		
+		
+            function show_Max_Add() {
+		  document.getElementById("Result").style.top = "365px";
+			document.getElementById("Add").style.display = "inline";
+			document.getElementById("Filter").style.display = "none";
            }
 
             function show_Min_Add() {
@@ -109,6 +133,27 @@ position: absolute; /* Относительное позиционировани
            }
 		   
 
+		               function show_Max_Filter() {
+		  document.getElementById("Result").style.top = "235px";
+			document.getElementById("Add").style.display = "none";
+			document.getElementById("Filter").style.display = "inline";
+           }
+
+            function show_Min_Filter() {
+                document.getElementById("Result").style.top = "40px";
+				document.getElementById("Filter").style.display = "none";
+           }
+		   
+/*		   
+function Clean() {
+	
+  	document.getElementsByName('Sel_types')[0].value ='';	
+
+
+}
+		   
+	*/	   
+		   
 		   
 	    
 
@@ -128,7 +173,7 @@ position: absolute; /* Относительное позиционировани
 <table border="1"  bgcolor="#A9A9A9">
 <tr>
 <th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
-<th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить фильтры:"/> </th>
+<th Width  = 110>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
 </tr>
 </table>  
 </div>
@@ -179,18 +224,93 @@ position: absolute; /* Относительное позиционировани
 	
 <div id="Filter">
 
+
+
+<?php 
+
+
+$Q_Types="
+select '' as name union all
+SELECT distinct Types as name FROM test where 1=1 ";
+$X =$connect->query($Q_Types);
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form action='' method='POST'>
+<fieldset>
+<legend>
+Здесь можно отфильтровать вопрос и решение по Clickhouse: 
+</legend>
+
 <table border="1"  bgcolor="#5he8jd">
 <tr>
-<th Width  = 110>  ccccccccccccccccccccccccccccc </th>
-<th Width  = 110>  cccccccccccccccccccccccc</th>
-<th Width  = 110>  cccccccccccccccccccccccc</th>
+<th Width  = 110>  Тип вопроса: </th>
+<th Width  = 110> <select name="Sel_types" >
+<?php 
+while ($row = mysqli_fetch_assoc($X))
+{
+    echo "<option value=".$row['name'].">".$row['name']."</option>";
+}
+?>        
+</select></th>
+
+
+<tr>
+<th Width  = 110>  Дата С: </th>
+<th Width  = 110> <input type="date" name="date"></th>
+
+
+
+<tr>
+<th Width  = 110>  Вопрос: </th>
+<th Width  = 110> <textarea rows="2" cols="45" name="A"></textarea></th>
+
+
+<tr>
+<th Width  = 110>  Ответ: </th>
+<th Width  = 110> <textarea rows="2" cols="45" name="Q"></textarea></th>
+
 </tr>
+
+<tr>
+<th Width  = 110>  Действие: </th>
+<th Width  = 110>  
+ <input type="button" onclick="show_Min_Filter();" value="Свернуть"/>
+ <input type="submit" name="Sub_filter"  value="Отфильтровать" >
+
+ </th></th> </th>
+
+
+</tr>
+
+
 </table>  
+
+		</fieldset>
+				</form>	
+
 
 </div>	
 	
-	
-	
+		
+<div id="XXXX">
+
+
+
+	</div>	
 	
 <div id="Result">
 	
@@ -198,11 +318,19 @@ position: absolute; /* Относительное позиционировани
 
 <?php
 
+
+
+/*f ($_POST['Sel_types']=='') {$_POST['Sel_types'] = upset($_POST['Sel_types'])} else {'2'};*/
+ ( isset($_POST['Sub_filter']) &&  $_POST['Sel_types'] != '' ) ? $Filter = "and Types ='".$_POST['Sel_types']."'"  : $Filter = "and 1=1";
+
+
+   
+  $query = "SELECT Id, cast(Create_Date as date) as  Create_Date, Types, Q,A FROM test where 1=1 ";
+  
+  $query = $query . $Filter;
   
   
-  
-  
-  $query = "SELECT Id, cast(Create_Date as date) as  Create_Date, Types, Q,A FROM test";
+/*  echo $query;*/
 
 if ($result = $connect->query($query)) {
 
