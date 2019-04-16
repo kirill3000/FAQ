@@ -10,9 +10,8 @@
 
 <html>
 <head>
- <title>Мануал Clickhouse</title>
-<meta name="yandex-verification" content="91981b26bdff965f, Мануал, FAQ, Документация, Clickhouse" />
-
+ <title>Clickhouse мануал</title>
+<meta name="yandex-verification" content="91981b26bdff965f, Clickhouse мануал , Clickhouse manual , Clickhouse документация, Кликхаус документация" />
 
 
 <style type="text/css">
@@ -212,7 +211,7 @@ top: 200px; /* Смещение слоя вниз */
 
   
 <div id ="Title">
-<h1> Мануал по Clickhouse </h1>
+<h1> Clickhouse мануал </h1>
  
 <table border="1"  bgcolor="#A9A9A9">
 <tr>
