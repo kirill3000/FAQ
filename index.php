@@ -12,7 +12,7 @@
 
 
 <style type="text/css">
-#block1
+#Add
 {
  position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
@@ -21,12 +21,13 @@
     background: #800000; /* Цвет фона */
     color: white; /* Цвет текста */
  left: 10px; /* Сдвиг слоя влево */
-    top: 35px; /* Смещение слоя вниз */
+    top: 40px; /* Смещение слоя вниз */
 	text-align: right;
+	
 }
 
 
-#block2
+#Filter
 {
 position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
@@ -35,14 +36,14 @@ position: absolute; /* Относительное позиционировани
    background: #800000;
     color: white; /* Цвет текста */
  left: 15 px; /* Сдвиг слоя влево */
-    top: 30px; /* Смещение слоя вниз */
+    top: 40px; /* Смещение слоя вниз */
 	text-align: right;
 }
 
 
 
 
-#block4
+#Result
 {
 position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
@@ -51,8 +52,10 @@ position: absolute; /* Относительное позиционировани
    background: #800000;
     color: white; /* Цвет текста */
  left: 15 px; /* Сдвиг слоя влево */
-    top: 30px; /* Смещение слоя вниз */
+    top: 40px; /* Смещение слоя вниз */
 	text-align: right;
+	visiblity: hidden;
+
 }
 
 
@@ -96,13 +99,16 @@ position: absolute; /* Относительное позиционировани
  
  
         <script type="text/javascript">
-            function show_Max() {
-		  document.getElementById("block4").style.top = "330px";
+            function show_Max_Add() {
+		  document.getElementById("Result").style.top = "330px";
+		
            }
 
-            function show_Min() {
-                document.getElementById("block4").style.top = "30px";
+            function show_Min_Add() {
+                document.getElementById("Result").style.top = "40px";
            }
+		   
+
 		   
 	    
 
@@ -121,8 +127,8 @@ position: absolute; /* Относительное позиционировани
  
 <table border="1"  bgcolor="#A9A9A9">
 <tr>
-<th Width  = 110>  <input type="button" onclick="show_Max();" value="Добавить вопрос:"/> </th>
-<th Width  = 110>  <input type="button" onclick="show_Max();" value="Добавить фильтры:"/> </th>
+<th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
+<th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить фильтры:"/> </th>
 </tr>
 </table>  
 </div>
@@ -131,7 +137,7 @@ position: absolute; /* Относительное позиционировани
 
 
 
-<div id="block1">
+<div id="Add">
 
 <form action='Add.php' method='POST'>
 <fieldset>
@@ -160,7 +166,7 @@ position: absolute; /* Относительное позиционировани
 	Да<input type =  "radio" name = "Git" value =  "Y"> 
 
 <p>
-<input type="button" onclick="show_Min();" value="Свернуть"/>
+<input type="button" onclick="show_Min_Add();" value="Свернуть"/>
 	<input type="submit" name="add" value="Добавить в базу" >
 
 	
@@ -171,7 +177,7 @@ position: absolute; /* Относительное позиционировани
 </div>
 	
 	
-<div id="block2">
+<div id="Filter">
 
 <table border="1"  bgcolor="#5he8jd">
 <tr>
@@ -186,7 +192,7 @@ position: absolute; /* Относительное позиционировани
 	
 	
 	
-<div id="block4">
+<div id="Result">
 	
 
 
