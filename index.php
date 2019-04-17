@@ -357,7 +357,7 @@ if ($_POST['Sel_types']	==  $row['name'])
 
 	<form action='' method='POST'>
 Выбрать страницу:	<input type="number" name="Page_Limit" value=<?php echo $_POST['Page_Limit']; ?> min="0" max="53" step="1">
-	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" >
+	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > <?php echo $query_Counter_Page; ?>
 	</form>
 </div>	
 	
@@ -375,19 +375,18 @@ if ($_POST['Sel_types']	==  $row['name'])
  ( isset($_POST['Sub_filter'])  && $_POST['Q'] != '' ) or isset($_POST['Page_Limit']) ? $P_Filter_Q = " and Q ='".$_POST['Q']."'"  : $P_Filter_Q = " and 1=1";
 */
 $Filter = " and 1=1";
-
 ( isset($_POST['Sub_filter']) &&  $_POST['HTML_Author'] != '') ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
+$Limits_min = $_POST['Page_Limit'] *1000;
+$Limits_max = $Limits_min+1000 ;
+$Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
 
- 
- $Limits_min = $_POST['Page_Limit'] *1000;
- $Limits_max = $Limits_min+1000 ;
-  $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
-	
-  $query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
+$query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
+$query = $query . $Filter . $Filter_Author  . $Limits;
   
-  $query = $query . $Filter . $Filter_Author  . $Limits;
+$Counter_Page = "SELECT  count(*) as Counter_Page FROM test where 1=1 ";
+$query_Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
   
-  
+
 /* echo $query;*/
 
 if ($result = $connect->query($query)) {
