@@ -11,6 +11,7 @@
 <html>
 <head>
  <title>Clickhouse мануал</title>
+<meta charset="utf-8"> 
 <meta name="yandex-verification" content="91981b26bdff965f, Clickhouse мануал , Clickhouse manual , Clickhouse документация, Кликхаус документация" />
 
 
@@ -217,6 +218,7 @@ top: 200px; /* Смещение слоя вниз */
 <tr>
 <th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
 <th Width  = 110>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
+<th Width  = 210>  <input type="text" id="user" size="40"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/> </th>
 </tr>
 </table>  
 </div>
@@ -305,6 +307,13 @@ if ($_POST['Sel_types']	==  $row['name'])
 </select></th>
 
 
+
+<tr>
+<th Width  = 160>  Автор телеграм: </th>
+<th Width  = 110> <input type="text" name="HTML_Author"></th>
+
+
+
 <tr>
 <th Width  = 110>  Дата С: </th>
 <th Width  = 110> <input type="date" name="date"></th>
@@ -336,11 +345,23 @@ if ($_POST['Sel_types']	==  $row['name'])
 
 </table>  
 
+
+
 		</fieldset>
 				</form>	
 
 
 </div>	
+	
+<div>	
+
+	<form action='' method='POST'>
+Выбрать страницу:	<input type="number" name="Page_Limit" value=<?php echo $_POST['Page_Limit']; ?> min="0" max="53" step="1">
+	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" >
+	</form>
+</div>	
+	
+	
 	
 	
 <div id="Result">
@@ -349,14 +370,22 @@ if ($_POST['Sel_types']	==  $row['name'])
 
 <?php
 
+/*
+ ( isset($_POST['Sub_filter']) && $_POST['Sel_types'] != '' ) or isset($_POST['Page_Limit']) ? $Filter = " and Types ='".$_POST['Sel_types']."'"  : $Filter = " and 1=1";
+ ( isset($_POST['Sub_filter'])  && $_POST['Q'] != '' ) or isset($_POST['Page_Limit']) ? $P_Filter_Q = " and Q ='".$_POST['Q']."'"  : $P_Filter_Q = " and 1=1";
+*/
+$Filter = " and 1=1";
 
- ( isset($_POST['Sub_filter']) &&  $_POST['Sel_types'] != '' ) ? $Filter = " and Types ='".$_POST['Sel_types']."'"  : $Filter = " and 1=1";
- ( isset($_POST['Sub_filter']) &&  $_POST['Q'] != '' ) ? $P_Filter_Q = " and Q ='".$_POST['Q']."'"  : $P_Filter_Q = " and 1=1";
+( isset($_POST['Sub_filter']) &&  $_POST['HTML_Author'] != '') ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
 
-   
-  $query = "SELECT Id, cast(Create_Date as date) as  Create_Date, Types, Q,A FROM test where 1=1 ";
+ 
+ $Limits_min = $_POST['Page_Limit'] *1000;
+ $Limits_max = $Limits_min+1000 ;
+  $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
+	
+  $query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
   
-  $query = $query . $Filter . $P_Filter_Q;
+  $query = $query . $Filter . $Filter_Author  . $Limits;
   
   
 /* echo $query;*/
@@ -368,6 +397,7 @@ print '<table class="table_blur">';
 <th>Id</th>
 <th nowrap>Тип вопроса</th>
 <th>Создание</th>
+<th>Телеграм</th>
 <th>Вопрос</th>
 <th>Ответ</th>
 </tr>';
@@ -377,6 +407,7 @@ print '<table class="table_blur">';
     print '<td>'.$row["Id"].'</td>';
 		    print '<td>'.$row["Types"].'</td>';
 				    print '<td  nowrap>'.$row["Create_Date"].'</td>';
+					print '<td>'.$row["Author"].'</td>';
 			    print '<td>'.$row["Q"].'</td>';
 				    print '<td>'.$row["A"].'</td>';
 
