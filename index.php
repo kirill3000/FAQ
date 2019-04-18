@@ -24,13 +24,14 @@
 #Title
 {
  position: absolute; /* Относительное позиционирование */
-    height:60px;
-    background: #800000; /* Цвет фона */
-    color: white; /* Цвет текста */
+   background: #f0f0f0;
+  width: 1200px; 
+    height:80px;
+ /*
  transform: translate(-50%, -50%);
-  position: absolute; 
-  top: 5; 
+  top: 45; 
   left: 50%;
+  */
 	
 }
 
@@ -43,7 +44,7 @@
  position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
     width: 600px; /* Ширина слоя */
-    height:350px;
+    height:320px;
    background: #add8e6;
     color: black; /* Цвет текста */
 top: 250px; /* Смещение слоя вниз */
@@ -207,70 +208,6 @@ top: 200px; /* Смещение слоя вниз */
 <body>
 
 
-
-
-
-  
-<div id ="Title">
-<h1> Clickhouse мануал </h1>
- 
-<table border="1"  bgcolor="#A9A9A9">
-<tr>
-<th Width  = 110>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
-<th Width  = 110>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
-<th Width  = 210>  <input type="text" id="user" size="40"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/> </th>
-</tr>
-</table>  
-</div>
-
-
-
-
-
-<div id="Add">
-
-<form action='Add.php' method='POST'>
-<fieldset>
-<legend>
-Здесь можно добавить вопрос и решение по Clickhouse: 
-</legend>
-
-
-Выбрать тип вопроса:
-<select name="Types" class="myInputT" required>
-<option value=""></option> 
-<option value="CH">CH</option> 
-<option value="ZK">ZK</option> 
-<option value="BI">BI</option> 
-<option value="Func">Функции</option> 
-<option value="Linux">Linux</option> 
-</select>
- <p>
-				
-Задать вопрос: <textarea name = "Q" rows="5" cols="50"  ></textarea>  
- <br>
-Ответить: <textarea name = "A" rows="5" cols="50"  required></textarea>  
- <br>
-Уже есть в FAQ на Githab ? 
-	Нет<input type =  "radio" name = "Git" value =  "N" checked>
-	Да<input type =  "radio" name = "Git" value =  "Y"> 
-
-<p>
-<input type="button" onclick="show_Min_Add();" value="Свернуть"/>
-	<input type="submit" name="add" value="Добавить в базу" >
-
-	
-			</fieldset>
-				</form>		
-
-					
-</div>
-	
-	
-<div id="Filter">
-
-
-
 <?php 
 
 
@@ -316,7 +253,88 @@ SELECT distinct Types as name FROM test where 1=1 ';
 
 $X2 =$connect->query($Q_Types);
 
+
 print'
+
+
+
+  
+<div id ="Title">
+
+<fieldset>
+<legend>
+Clickhouse мануал
+</legend>';
+
+ if ($result = $connect->query($Counter_Page)) {
+$row_Counter_Page = mysqli_fetch_array($result);
+print '
+
+<form action="" method="POST" ">
+<table>
+<tr>	
+<th>  
+Текущая страница: <input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="1" max=' . $row_Counter_Page["Counter_Page"].' step="1">  из ' . $row_Counter_Page["Counter_Page"].'
+	<input type="hidden" name="HTML_Author" value="'.$_POST['HTML_Author'].'">
+	<input type="hidden" name="date" value='.$_POST['date'].'>
+	<input type="hidden" name="Q" value='.$_POST['Q'].'>
+	<input type="hidden" name="A" value='.$_POST['A'].'>
+
+<input type="submit" name="Submit_HTML_Page_Limit"  value="Выбрать страницу"></form>
+<th>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
+<th>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
+<th>  <input type="text" id="user" size="50"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/></th>
+</tr>
+</table>  
+
+</fieldset>
+
+</div>	
+';} 
+ print'
+<div id="Add">
+
+<form action="Add.php" method="POST">
+<fieldset>
+<legend>
+Здесь можно добавить вопрос и решение по Clickhouse: 
+</legend>
+
+
+Выбрать тип вопроса:
+<select name="Types" class="myInputT" required>
+<option value=""></option> 
+<option value="CH">CH</option> 
+<option value="ZK">ZK</option> 
+<option value="BI">BI</option> 
+<option value="Func">Функции</option> 
+<option value="Linux">Linux</option> 
+</select>
+ <p>
+				
+Задать вопрос: <textarea name = "Q" rows="5" cols="50"  ></textarea>  
+ <br>
+Ответить: <textarea name = "A" rows="5" cols="50"  required></textarea>  
+ <br>
+Уже есть в FAQ на Githab ? 
+	Нет<input type =  "radio" name = "Git" value =  "N" checked>
+	Да<input type =  "radio" name = "Git" value =  "Y"> 
+
+<p>
+<input type="button" onclick="show_Min_Add();" value="Свернуть"/>
+	<input type="submit" name="add" value="Добавить в базу" >
+
+	
+			</fieldset>
+				</form>		
+
+					
+</div>
+	
+	
+<div id="Filter">
+
+
 
 <form action="" method="POST">
 <fieldset>
@@ -326,8 +344,8 @@ print'
 
 <table border="1">
 <tr>
-<th Width  = 110>  Тип вопроса: </th>
-<th Width  = 110> <select name="Sel_types" >
+<th>Вопрос: </th>
+<th> <select name="Sel_types" >
 ';
 
 
@@ -345,8 +363,8 @@ print'
 
 
 <tr>
-<th Width  = 160>  Автор телеграм: </th>
-<th Width  = 110> <input type="text" name="HTML_Author" value ="'.$_POST['HTML_Author'].'"></th>
+<th>Автор </th>
+<th> <input type="text" name="HTML_Author" value ="'.$_POST['HTML_Author'].'"></th>
 
 
 
@@ -398,33 +416,11 @@ print'
 
 /* echo $query;*/
 
-if ($result = $connect->query($Counter_Page)) {
-$row_Counter_Page = mysqli_fetch_array($result);
-
-	print '
-<div>	
-
-	<form action="" method="POST">
-Выбрать страницу:	<input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="1" max=' . $row_Counter_Page["Counter_Page"].' step="1">  из ' . $row_Counter_Page["Counter_Page"].'
-	
-	<input type="hidden" name="HTML_Author" value="'.$_POST['HTML_Author'].'">
-	<input type="hidden" name="date" value='.$_POST['date'].'>
-	<input type="hidden" name="Q" value='.$_POST['Q'].'>
-	<input type="hidden" name="A" value='.$_POST['A'].'>
-	
-	
-	<input type="submit" name="Submit_HTML_Page_Limit"  value="Выбрать страницу" > 
-		
-	</form>';
-}
-	print '
 
 	
-</div>	
 	
-	
-	
-	
+
+print '	
 <div id="Result">
 	';
 
