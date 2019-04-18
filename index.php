@@ -307,6 +307,8 @@ if ($_POST['Sel_types']	==  $row['name'])
 </select></th>
 
 
+<?php 
+print'
 
 <tr>
 <th Width  = 160>  Автор телеграм: </th>
@@ -354,9 +356,8 @@ if ($_POST['Sel_types']	==  $row['name'])
 </div>	
 
 
-<?php 
 
-
+';
 
 
 
