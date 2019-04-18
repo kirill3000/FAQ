@@ -352,23 +352,14 @@ if ($_POST['Sel_types']	==  $row['name'])
 
 
 </div>	
-	
-<div>	
-
-	<form action='' method='POST'>
-Выбрать страницу:	<input type="number" name="Page_Limit" value=<?php echo $_POST['Page_Limit']; ?> min="0" max="53" step="1">
-	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > <?php echo $query_Counter_Page; ?>
-	</form>
-</div>	
-	
-	
-	
-	
-<div id="Result">
-	
 
 
-<?php
+<?php 
+
+
+
+
+
 
 /*
  ( isset($_POST['Sub_filter']) && $_POST['Sel_types'] != '' ) or isset($_POST['Page_Limit']) ? $Filter = " and Types ='".$_POST['Sel_types']."'"  : $Filter = " and 1=1";
@@ -376,18 +367,50 @@ if ($_POST['Sel_types']	==  $row['name'])
 */
 $Filter = " and 1=1";
 ( isset($_POST['Sub_filter']) &&  $_POST['HTML_Author'] != '') ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
-$Limits_min = $_POST['Page_Limit'] *1000;
+$Limits_min = ($_POST['Page_Limit'] ) ;
+$Limits_min = ($Limits_min ) * 1000;
+
 $Limits_max = $Limits_min+1000 ;
 $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
 
 $query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
 $query = $query . $Filter . $Filter_Author  . $Limits;
   
-$Counter_Page = "SELECT  count(*) as Counter_Page FROM test where 1=1 ";
-$query_Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
-  
+$Counter_Page = "SELECT  round(count(*)/1000,0) as Counter_Page FROM test where 1=1 ";
+$Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
 
 /* echo $query;*/
+
+	print '
+<div>	
+
+	<form action="" method="POST">
+Выбрать страницу:	<input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="0" max="53" step="1">
+	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > 
+	</form>';
+if ($result2 = $connect->query($Counter_Page)) {
+ while ($row = mysqli_fetch_assoc($result2)) {
+    print 'из ' . $row["Counter_Page"].';';
+}
+mysqli_free_result($result2);
+}
+	print '
+
+	
+</div>	
+	
+	
+	
+	
+<div id="Result">
+	';
+
+ 
+
+
+
+ 
+
 
 if ($result = $connect->query($query)) {
 
