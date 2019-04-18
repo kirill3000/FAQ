@@ -357,11 +357,32 @@ if ($_POST['Sel_types']	==  $row['name'])
 
 	<form action='' method='POST'>
 Выбрать страницу:	<input type="number" name="Page_Limit" value=<?php echo $_POST['Page_Limit']; ?> min="0" max="53" step="1">
-	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > <?php echo $query_Counter_Page; ?>
+	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > 
+	
 	</form>
+	
+<?php
+ 
+echo'fffffff';
+
+if ($result2 = $connect->query($Counter_Page)) {
+
+  while ($row = mysqli_fetch_assoc($result2)) {
+    print '<p>'.$row["Counter_Page"].'</p>';
+}
+
+mysqli_free_result($result2);
+}
+ 
+  
+echo'fffffff';
+ 
+?>
+	
+	
 </div>	
 	
-	
+
 	
 	
 <div id="Result">
@@ -384,10 +405,20 @@ $query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Aut
 $query = $query . $Filter . $Filter_Author  . $Limits;
   
 $Counter_Page = "SELECT  count(*) as Counter_Page FROM test where 1=1 ";
-$query_Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
+$Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
   
+/*
+    
+if ($result2 = $connect->query($Counter_Page)) {
 
-/* echo $query;*/
+  while ($row = mysqli_fetch_assoc($result2)) {
+    print '<p>'.$row["Counter_Page"].'</p>';
+}
+
+mysqli_free_result($result2);
+}
+ 
+ */
 
 if ($result = $connect->query($query)) {
 
@@ -417,12 +448,12 @@ mysqli_free_result($result);
 
 }
 
+
+
+
 /* закрытие соединения */
 $connect->close();
-  
-  
-  
-		
+
 ?>
 
 
