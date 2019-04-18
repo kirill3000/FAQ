@@ -11,6 +11,7 @@
 <html>
 <head>
  <title>Clickhouse мануал</title>
+   <meta charset="utf-8">
 <meta name="yandex-verification" content="91981b26bdff965f, Clickhouse мануал , Clickhouse manual , Clickhouse документация, Кликхаус документация" />
 
 
