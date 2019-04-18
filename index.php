@@ -43,7 +43,7 @@
  position: absolute; /* Относительное позиционирование */
     float: left; /* Совмещение колонок по горизонтали */
     width: 600px; /* Ширина слоя */
-    height:320px;
+    height:350px;
    background: #add8e6;
     color: black; /* Цвет текста */
 top: 250px; /* Смещение слоя вниз */
@@ -86,14 +86,14 @@ top: 200px; /* Смещение слоя вниз */
 #Result
 {
  position: absolute; /* Относительное позиционирование */
-    height:320px;
+    height:350px;
   /*  background: #800000; */
     color: white; /* Цвет текста */
 
 
 	<?php  
 
- ( isset($_POST['Sub_filter']) or isset($_POST['Sub_filter_del']) ) ?  $Temp = "top: 320px;" :  $Temp = " top: 90px; "  ;
+ ( isset($_POST['Sub_filter']) or isset($_POST['Sub_filter_del']) ) ?  $Temp = "top: 350px;" :  $Temp = " top: 90px; "  ;
   echo $Temp ;
 ?>
 
@@ -184,7 +184,7 @@ top: 200px; /* Смещение слоя вниз */
 		   
 
 		               function show_Max_Filter() {
-		  document.getElementById("Result").style.top = "320px";
+		  document.getElementById("Result").style.top = "350px";
 			document.getElementById("Add").style.display = "none";
 			document.getElementById("Filter").style.display = "inline";
            }
@@ -274,16 +274,51 @@ top: 200px; /* Смещение слоя вниз */
 <?php 
 
 
-$Q_Types="
-select '' as name union all
-SELECT distinct Types as name FROM test where 1=1 ";
+isset($_POST['Sub_filter_del']) ?  $_POST['HTML_Author']="" : $_POST['HTML_Author']  ;
+
+
+
+
+$Filter = " and 1=1";
+
+
+( !isset($_POST['Page_Limit']) or isset($_POST['HTML_Sub_filter']) ) ? $_POST['Page_Limit']=1 : $_POST['Page_Limit']  ;
+
+(isset($_POST['HTML_Author']) && $_POST['HTML_Author'] != '')  ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
+
+
+
+
+
+
+$Limits_min = ($_POST['Page_Limit'] ) * 1 -1;
+$Limits_min = ($Limits_min ) * 1000;
+
+$Limits_max = $Limits_min+1000 ;
+$Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
+
+$query = "SELECT row_number() over ( order by 1) Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
+$query = $query . $Filter . $Filter_Author  . $Limits;
+  
+$Counter_Page = "SELECT  CEIL(count(*)/1000) as Counter_Page FROM test where 1=1 ";
+$Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
+
+
+
+
+
+
+
+
+$Q_Types='
+select "" as name union all
+SELECT distinct Types as name FROM test where 1=1 ';
 
 $X2 =$connect->query($Q_Types);
-?>
 
+print'
 
-
-<form action='' method='POST'>
+<form action="" method="POST">
 <fieldset>
 <legend>
 Здесь можно отфильтровать вопрос и решение по Clickhouse: 
@@ -293,26 +328,25 @@ $X2 =$connect->query($Q_Types);
 <tr>
 <th Width  = 110>  Тип вопроса: </th>
 <th Width  = 110> <select name="Sel_types" >
-<?php 
+';
+
 
 while ($row = mysqli_fetch_assoc($X2))
 {
-if ($_POST['Sel_types']	==  $row['name']) 
-{	    echo "<option selected  value=".$row['name'].">".$row['name']."</option>";}
+if ($_POST["Sel_types"]	==  $row["name"]) 
+{	    echo '<option selected  value='.$row["name"].'>'.$row["name"].'</option>';}
  else 
- {    echo "<option value=".$row['name'].">".$row['name']."</option>";};
+ {    echo '<option value='.$row["name"].'>'.$row["name"].'</option>';};
 	
 }
-?>        
+print'       
 </select></th>
 
 
-<?php 
-print'
 
 <tr>
 <th Width  = 160>  Автор телеграм: </th>
-<th Width  = 110> <input type="text" name="HTML_Author"></th>
+<th Width  = 110> <input type="text" name="HTML_Author" value ="'.$_POST['HTML_Author'].'"></th>
 
 
 
@@ -333,12 +367,15 @@ print'
 
 </tr>
 
+<input type="hidden" name="Page_Limit" value='.$_POST['Page_Limit'].'>
+
+
 <tr>
 <th Width  = 110>  Действие: </th>
 <th Width  = 110>  
  <input type="button" onclick="show_Min_Filter();" value="Свернуть"/>
- <input type="submit" name="Sub_filter"  value="Отфильтровать" >
- <input type="submit" name="Sub_filter_del"  value="Сбросить фильтры" >
+ <input type="submit" name="HTML_Sub_filter"  value="Отфильтровать" >
+<input type="submit" name="Sub_filter_del"  value="Очистить фильтры" >
  </th></th> </th>
 
 
@@ -356,44 +393,29 @@ print'
 </div>	
 
 
-
 ';
 
 
-
-
-/*
- ( isset($_POST['Sub_filter']) && $_POST['Sel_types'] != '' ) or isset($_POST['Page_Limit']) ? $Filter = " and Types ='".$_POST['Sel_types']."'"  : $Filter = " and 1=1";
- ( isset($_POST['Sub_filter'])  && $_POST['Q'] != '' ) or isset($_POST['Page_Limit']) ? $P_Filter_Q = " and Q ='".$_POST['Q']."'"  : $P_Filter_Q = " and 1=1";
-*/
-$Filter = " and 1=1";
-( isset($_POST['Sub_filter']) &&  $_POST['HTML_Author'] != '') ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
-$Limits_min = ($_POST['Page_Limit'] ) ;
-$Limits_min = ($Limits_min ) * 1000;
-
-$Limits_max = $Limits_min+1000 ;
-$Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
-
-$query = "SELECT  Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
-$query = $query . $Filter . $Filter_Author  . $Limits;
-  
-$Counter_Page = "SELECT  round(count(*)/1000,0) as Counter_Page FROM test where 1=1 ";
-$Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
-
 /* echo $query;*/
+
+if ($result = $connect->query($Counter_Page)) {
+$row_Counter_Page = mysqli_fetch_array($result);
 
 	print '
 <div>	
 
 	<form action="" method="POST">
-Выбрать страницу:	<input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="0" max="53" step="1">
-	 <input type="submit" name="Page_Limit_Submit"  value="Выбрать страницу" > 
+Выбрать страницу:	<input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="1" max=' . $row_Counter_Page["Counter_Page"].' step="1">  из ' . $row_Counter_Page["Counter_Page"].'
+	
+	<input type="hidden" name="HTML_Author" value="'.$_POST['HTML_Author'].'">
+	<input type="hidden" name="date" value='.$_POST['date'].'>
+	<input type="hidden" name="Q" value='.$_POST['Q'].'>
+	<input type="hidden" name="A" value='.$_POST['A'].'>
+	
+	
+	<input type="submit" name="Submit_HTML_Page_Limit"  value="Выбрать страницу" > 
+		
 	</form>';
-if ($result2 = $connect->query($Counter_Page)) {
- while ($row = mysqli_fetch_assoc($result2)) {
-    print 'из ' . $row["Counter_Page"].';';
-}
-mysqli_free_result($result2);
 }
 	print '
 
