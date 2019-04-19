@@ -225,7 +225,7 @@ $Filter = " and 1=1";
 
 
 
-
+echo $Filter_Q
 
 
 $Limits_min = ($_POST['Page_Limit'] ) * 1 -1;
@@ -344,7 +344,7 @@ print '
 
 <table border="1">
 <tr>
-<th>Вопрос: </th>
+<th>Тип: </th>
 <th> <select name="Sel_types" >
 ';
 
@@ -366,13 +366,13 @@ print'
 <th>Автор </th>
 <th> <input type="text" name="HTML_Author" value ="'.$_POST['HTML_Author'].'"></th>
 
-
+<!-- 
 
 <tr>
 <th Width  = 110>  Дата С: </th>
 <th Width  = 110> <input type="date" name="date"></th>
 
-
+-->
 
 <tr>
 <th Width  = 110>  Вопрос: </th>
