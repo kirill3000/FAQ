@@ -233,15 +233,29 @@ $Limits_min = ($Limits_min ) * 1000;
 
 $Limits_max = $Limits_min+1000 ;
 $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
+$Desc = ' order by Ro ';
 
-$query = "SELECT row_number() over ( order by 1) Id, cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
-$query = $query . $Filter . $Filter_Author  . $Limits;
+
+$query = "SELECT Id as Idd, row_number() over ( order by Id desc ) as Ro , cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
+$query = $query . $Filter . $Filter_Author  .  $Desc . $Limits;
   
-$Counter_Page = "SELECT  CEIL(count(*)/1000) as Counter_Page FROM test where 1=1 ";
-$Counter_Page = $Counter_Page . $Filter . $Filter_Author ;
+$Counter_Page = "SELECT  CEIL(count(*)/1000) as Counter_Page , Max(Id) as Max_Rows  FROM test where 1=1 ";
+$Counter_Page = $Counter_Page . $Filter . $Filter_Author   ;
+
+/*
+ if ($result = $connect->query($Counter_Page)) {
+$row_Counter_Page = mysqli_fetch_array($result);
+print $row_Counter_Page["Max_Rows"];
+ }
+
+*/
 
 
+$Update_Array_Massive =  ($_POST['submit_UP_HTML'] * 1) - 1;
 
+
+echo '_'.$_POST['UP_HTML_Idd'][$Update_Array_Massive].'_';
+echo '_'.$_POST['UP_HTML_Types'][$Update_Array_Massive].'_';
 
 
 
@@ -344,7 +358,7 @@ print '
 
 <table border="1">
 <tr>
-<th>Вопрос: </th>
+<th>Тип</th>
 <th> <select name="Sel_types" >
 ';
 
@@ -363,24 +377,24 @@ print'
 
 
 <tr>
-<th>Автор </th>
+<th>Автор</th>
 <th> <input type="text" name="HTML_Author" value ="'.$_POST['HTML_Author'].'"></th>
 
 
-
+<!--
 <tr>
 <th Width  = 110>  Дата С: </th>
 <th Width  = 110> <input type="date" name="date"></th>
-
+-->
 
 
 <tr>
-<th Width  = 110>  Вопрос: </th>
+<th Width  = 110>Вопрос</th>
 <th Width  = 110> <textarea rows="2" cols="45" name="Q"></textarea></th>
 
 
 <tr>
-<th Width  = 110>  Ответ: </th>
+<th Width  = 110>Ответ</th>
 <th Width  = 110> <textarea rows="2" cols="45" name="A"></textarea></th>
 
 </tr>
@@ -389,7 +403,7 @@ print'
 
 
 <tr>
-<th Width  = 110>  Действие: </th>
+<th Width  = 110>Действие</th>
 <th Width  = 110>  
  <input type="button" onclick="show_Min_Filter();" value="Свернуть"/>
  <input type="submit" name="HTML_Sub_filter"  value="Отфильтровать" >
@@ -424,40 +438,52 @@ print '
 <div id="Result">
 	';
 
- 
 
 
 
- 
 
-
-if ($result = $connect->query($query)) {
-
+print '<form action="" method="POST">';
 print '<table class="table_blur">';
  print '<tr>
-<th>Id</th>
-<th nowrap>Тип вопроса</th>
-<th>Создание</th>
-<th>Телеграм</th>
+<th>&#9998;</th>
+<th nowrap>Тип</th>
+<!--<th>Дата</th>-->
+<th>Автор</th>
 <th>Вопрос</th>
 <th>Ответ</th>
 </tr>';
 
-  while ($row = mysqli_fetch_assoc($result)) {
-    print '<tr>';
-    print '<td>'.$row["Id"].'</td>';
-		    print '<td>'.$row["Types"].'</td>';
-				    print '<td  nowrap>'.$row["Create_Date"].'</td>';
-					print '<td>'.$row["Author"].'</td>';
-			    print '<td>'.$row["Q"].'</td>';
-				    print '<td>'.$row["A"].'</td>';
 
-    print '</tr>';
-}
+	
+	
+	
+	if ($result = mysqli_query($connect, $query)) {
+
+    /* извлечение ассоциативного массива */
+    while ($row = mysqli_fetch_assoc($result)) {
+    print '<tr>';		
+/*print '<td>'.$row["Author"][0].'</td>';*/
+		print '<td><input type="submit" name="submit_UP_HTML" value ="'.$row["Ro"].'"></td>';
+		print '<input type="hidden" name="UP_HTML_Idd[]" value ="'.$row["Idd"].'">';
+		print '<td><input type="text" name="UP_HTML_Types[]" value ="'.$row["Types"].'"></td>';
+		print '<td>'.$row["Author"].'</td>';
+		print '<td>'.$row["Q"].'</td>';
+		print '<td>'.$row["A"].'</td>';
+
+
+
+	
+    print '</tr>';	
+
+
+    }}
+
+
 print '</table>';
+print '</from>';
 mysqli_free_result($result);
 
-}
+
 
 /* закрытие соединения */
 $connect->close();
