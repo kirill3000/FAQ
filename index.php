@@ -74,7 +74,7 @@ top: 200px; /* Смещение слоя вниз */
 
 	<?php  
 
- ( isset($_POST['Sub_filter']) or isset($_POST['Sub_filter_del']) )?  $Temp = " display: inline;" :  $Temp = "display: none;"  ;
+ ( isset($_POST['Sub_filter'])  )?  $Temp = " display: inline;" :  $Temp = "display: none;"  ;
   echo $Temp ;
 ?>
 	
@@ -94,7 +94,7 @@ top: 200px; /* Смещение слоя вниз */
 
 	<?php  
 
- ( isset($_POST['Sub_filter']) or isset($_POST['Sub_filter_del']) ) ?  $Temp = "top: 350px;" :  $Temp = " top: 90px; "  ;
+ ( isset($_POST['Sub_filter'])  ) ?  $Temp = "top: 350px;" :  $Temp = " top: 90px; "  ;
   echo $Temp ;
 ?>
 
@@ -222,25 +222,25 @@ $Filter = " and 1=1";
 ( !isset($_POST['Page_Limit']) or isset($_POST['HTML_Sub_filter']) ) ? $_POST['Page_Limit']=1 : $_POST['Page_Limit']  ;
 
 (isset($_POST['HTML_Author']) && $_POST['HTML_Author'] != '')  ? $Filter_Author = " and Author ='".$_POST['HTML_Author']."'"  : $Filter_Author = " and 1=1";
+(isset($_POST['Sel_types']) && $_POST['Sel_types'] != '')  ? $Filter_Types = " and Types ='".$_POST['Sel_types']."'"  : $Filter_Types = " and 1=1";
 
-
-
+$Chanck_Counter=100;
 
 
 
 $Limits_min = ($_POST['Page_Limit'] ) * 1 -1;
-$Limits_min = ($Limits_min ) * 100;
+$Limits_min = ($Limits_min ) * $Chanck_Counter;
 
-$Limits_max = $Limits_min+100 ;
+$Limits_max = $Limits_min+$Chanck_Counter ;
 $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
 $Desc = ' order by Ro ';
 
 
 $query = "SELECT Id as Idd, row_number() over ( order by Id desc ) as Ro , cast(Create_Date as date) as  Create_Date, Types, Q,A, Author FROM test where 1=1 ";
-$query = $query . $Filter . $Filter_Author  .  $Desc . $Limits;
+$query = $query . $Filter . $Filter_Types . $Filter_Author  .  $Desc . $Limits;
   
-$Counter_Page = "SELECT  CEIL(count(*)/1000) as Counter_Page , Max(Id) as Max_Rows  FROM test where 1=1 ";
-$Counter_Page = $Counter_Page . $Filter . $Filter_Author   ;
+$Counter_Page = "SELECT  CEIL(count(*)/$Chanck_Counter) as Counter_Page , Max(Id) as Max_Rows  FROM test where 1=1 ";
+$Counter_Page = $Counter_Page . $Filter . $Filter_Types . $Filter_Author   ;
 
 /*
  if ($result = $connect->query($Counter_Page)) {
@@ -257,32 +257,33 @@ $submit_UP_HTML = explode("_", $submit_UP_HTML);
  
 $UP_Idd =  $submit_UP_HTML[0];
 $UP_Ro =  $submit_UP_HTML[1];
-$UP_Types =  $submit_UP_HTML[2];
-
-$UP_Types2 =   $_POST['xxx'][$submit_UP_HTML[1]-1] ;
+$UP_Types =   $_POST['xxx'][$submit_UP_HTML[2]-1] ;
 
 
+/* Update типа*/
+$Q_UP_Types='update `test` set Types = "'.$UP_Types.'"   where 1=1 and Id = '.$UP_Idd;
+$Q_UP_Types = mysqli_query($connect, $Q_UP_Types);
 
 
-
-
-
-
- echo '_'.$UP_Idd.'_'.$UP_Ro.'_'.$UP_Types.'_'.$UP_Types2.'_';
-
-/* 
-echo '_'.$_POST['UP_HTML_Types'][$Ro].'_';
-*/
-
-
-
-
-
+/* Список типов*/
 $Q_Types='
 select "" as name union all
 SELECT distinct Types as name FROM test where 1=1 ';
 
 $X2 =$connect->query($Q_Types);
+
+
+
+
+
+/*
+
+ echo '_'.$UP_Idd.'_'.$UP_Ro.'_'.$UP_Types;
+
+
+
+*/
+
 
 
 print'
@@ -301,18 +302,23 @@ Clickhouse мануал
 $row_Counter_Page = mysqli_fetch_array($result);
 print '
 
+
+
 <form action="" method="POST" ">
 <table>
 <tr>	
 <th>  
 Текущая страница: <input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="1" max=' . $row_Counter_Page["Counter_Page"].' step="1">  из ' . $row_Counter_Page["Counter_Page"].'
-	
-	
-	
-<input type="submit" name="submit_UP_HTML"  value="Выбрать страницу"></form>
 
-<th>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
-<th>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
+<button type="submit" value="0" name="submit_UP_HTML" >&#10004;</button>
+</form>
+
+
+
+
+<th>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры"/> </th>
+<th> <input type="submit" name="Sub_filter_del"  value="Очистить фильтры" > </th>
+<th>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос"/> </th>
 <th>  <input type="text" id="user" size="50"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/></th>
 </tr>
 </table>  
@@ -332,14 +338,7 @@ print '
 
 
 Выбрать тип вопроса:
-<select name="Types" class="myInputT" required>
-<option value=""></option> 
-<option value="CH">CH</option> 
-<option value="ZK">ZK</option> 
-<option value="BI">BI</option> 
-<option value="Func">Функции</option> 
-<option value="Linux">Linux</option> 
-</select>
+<input type="text"  name="Types" ></>
  <p>
 				
 Задать вопрос: <textarea name = "Q" rows="5" cols="50"  ></textarea>  
@@ -423,7 +422,7 @@ print'
 <th Width  = 110>  
  <input type="button" onclick="show_Min_Filter();" value="Свернуть"/>
  <input type="submit" name="HTML_Sub_filter"  value="Отфильтровать" >
-<input type="submit" name="Sub_filter_del"  value="Очистить фильтры" >
+
  </th></th> </th>
 
 
@@ -460,7 +459,7 @@ print '
 
 print '<table class="table_blur">';
  print '<tr>
-<th>&#9998;</th>
+<th>&#9997;</th>
 <th nowrap>№</th>
 <th nowrap>Тип</th>
 <!--<th>Дата</th>-->
@@ -477,12 +476,15 @@ print '<table class="table_blur">';
 
     /* извлечение ассоциативного массива */
     while ($row = mysqli_fetch_assoc($result)) {
+		   $i = $i + 1; // Увеличение переменной $i на 1, сокращенная запись $i++
+     
+
     print '<tr>';		
 /*print '<td>'.$row["Author"][0].'</td>';*/
 	/*	print '<td><input type="submit" name="submit_UP_HTML" value ="'.$row["Ro"].'"></td>';*/
 		
-		
-		print '<td><button type="submit" value="'.$row["Idd"]."_".$row["Ro"]."_".$row["Types"].'" name="submit_UP_HTML" >&#9998;</button></td>';
+
+		print '<td><button type="submit" value="'.$row["Idd"]."_".$row["Ro"]."_".$i.'" name="submit_UP_HTML" >&#9997;</button></td>';
 
 		
 	/*	print '<input type="text" name="Page_Limit" value ="'.$_POST['Page_Limit'].'">'; */
