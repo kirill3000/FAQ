@@ -229,9 +229,9 @@ $Filter = " and 1=1";
 
 
 $Limits_min = ($_POST['Page_Limit'] ) * 1 -1;
-$Limits_min = ($Limits_min ) * 1000;
+$Limits_min = ($Limits_min ) * 100;
 
-$Limits_max = $Limits_min+1000 ;
+$Limits_max = $Limits_min+100 ;
 $Limits = ' LIMIT '.$Limits_min.' , '.$Limits_max.'';
 $Desc = ' order by Ro ';
 
@@ -250,12 +250,29 @@ print $row_Counter_Page["Max_Rows"];
 
 */
 
+/*echo '_'.$_POST['submit_UP_HTML'].'_';*/
 
-$Update_Array_Massive =  ($_POST['submit_UP_HTML'] * 1) - 1;
+$submit_UP_HTML = $_POST['submit_UP_HTML'];
+$submit_UP_HTML = explode("_", $submit_UP_HTML);  
+ 
+$UP_Idd =  $submit_UP_HTML[0];
+$UP_Ro =  $submit_UP_HTML[1];
+$UP_Types =  $submit_UP_HTML[2];
+
+$UP_Types2 =   $_POST['xxx'][$submit_UP_HTML[1]-1] ;
 
 
-echo '_'.$_POST['UP_HTML_Idd'][$Update_Array_Massive].'_';
-echo '_'.$_POST['UP_HTML_Types'][$Update_Array_Massive].'_';
+
+
+
+
+
+
+ echo '_'.$UP_Idd.'_'.$UP_Ro.'_'.$UP_Types.'_'.$UP_Types2.'_';
+
+/* 
+echo '_'.$_POST['UP_HTML_Types'][$Ro].'_';
+*/
 
 
 
@@ -289,12 +306,11 @@ print '
 <tr>	
 <th>  
 Текущая страница: <input type="number" name="Page_Limit" value='.$_POST['Page_Limit'].' min="1" max=' . $row_Counter_Page["Counter_Page"].' step="1">  из ' . $row_Counter_Page["Counter_Page"].'
-	<input type="hidden" name="HTML_Author" value="'.$_POST['HTML_Author'].'">
-	<input type="hidden" name="date" value='.$_POST['date'].'>
-	<input type="hidden" name="Q" value='.$_POST['Q'].'>
-	<input type="hidden" name="A" value='.$_POST['A'].'>
+	
+	
+	
+<input type="submit" name="submit_UP_HTML"  value="Выбрать страницу"></form>
 
-<input type="submit" name="Submit_HTML_Page_Limit"  value="Выбрать страницу"></form>
 <th>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры:"/> </th>
 <th>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос:"/> </th>
 <th>  <input type="text" id="user" size="50"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/></th>
@@ -419,7 +435,7 @@ print'
 
 
 		</fieldset>
-				</form>	
+		
 
 
 </div>	
@@ -442,10 +458,10 @@ print '
 
 
 
-print '<form action="" method="POST">';
 print '<table class="table_blur">';
  print '<tr>
 <th>&#9998;</th>
+<th nowrap>№</th>
 <th nowrap>Тип</th>
 <!--<th>Дата</th>-->
 <th>Автор</th>
@@ -463,12 +479,24 @@ print '<table class="table_blur">';
     while ($row = mysqli_fetch_assoc($result)) {
     print '<tr>';		
 /*print '<td>'.$row["Author"][0].'</td>';*/
-		print '<td><input type="submit" name="submit_UP_HTML" value ="'.$row["Ro"].'"></td>';
-		print '<input type="hidden" name="UP_HTML_Idd[]" value ="'.$row["Idd"].'">';
-		print '<td><input type="text" name="UP_HTML_Types[]" value ="'.$row["Types"].'"></td>';
+	/*	print '<td><input type="submit" name="submit_UP_HTML" value ="'.$row["Ro"].'"></td>';*/
+		
+		
+		print '<td><button type="submit" value="'.$row["Idd"]."_".$row["Ro"]."_".$row["Types"].'" name="submit_UP_HTML" >&#9998;</button></td>';
+
+		
+	/*	print '<input type="text" name="Page_Limit" value ="'.$_POST['Page_Limit'].'">'; */
+
+		print '<td>'.$row["Ro"].'</td>';
+		print '<td><input type="text" name="xxx[]" value="'.$row["Types"].'"></td>';
 		print '<td>'.$row["Author"].'</td>';
 		print '<td>'.$row["Q"].'</td>';
 		print '<td>'.$row["A"].'</td>';
+		
+		
+		
+		
+
 
 
 
