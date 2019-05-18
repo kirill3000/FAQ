@@ -135,32 +135,22 @@ top: 200px; /* Смещение слоя вниз */
 
 
 <!-- Yandex.Metrika counter -->
+
+
+<!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
-    (function (d, w, c) {
-        (w[c] = w[c] || []).push(function() {
-            try {
-                w.yaCounter50797789 = new Ya.Metrika2({
-                    id:50797789,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true
-                });
-            } catch(e) { }
-        });
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-        var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/tag.js";
-
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f, false);
-        } else { f(); }
-    })(document, window, "yandex_metrika_callbacks2");
+   ym(50797789, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/50797789" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 <!-- /Yandex.Metrika counter -->
 
  <meta charset="UTF-8">
@@ -319,11 +309,25 @@ print '
 <th>  <input type="button" onclick="show_Max_Filter();" value="Добавить фильтры"/> </th>
 <th> <input type="submit" name="Sub_filter_del"  value="Очистить фильтры" > </th>
 <th>  <input type="button" onclick="show_Max_Add();" value="Добавить вопрос"/> </th>
-<th>  <input type="text" id="user" size="50"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/></th>
+<th>  <input type="text" id="user" size="40"" value="Вопросы и пожелания на почту: kiril-2012@list.ru"/></th>
+
+<th>
+
+<!-- Yandex.Metrika informer -->
+<a href="https://metrika.yandex.ru/stat/?id=50797789&amp;from=informer"
+target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/50797789/2_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:79px; height:39px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры)" class="ym-advanced-informer" data-cid="50797789" data-lang="ru" /></a>
+<!-- /Yandex.Metrika informer -->
+
+</th>
+
 </tr>
 </table>  
 
 </fieldset>
+
+
+
 
 </div>	
 ';} 
